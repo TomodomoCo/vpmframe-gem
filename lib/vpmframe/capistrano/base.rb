@@ -1,10 +1,13 @@
-require 'capistrano/vpmframe/common'
+require 'vpmframe/capistrano/common'
 
 unless Capistrano::Configuration.respond_to?(:instance)
   abort "capistrano-vpmframe requires Capistrano 2+"
 end
 
 Capistrano::Configuration.instance.load do
+
+_cset (:project_yml_path)      { abort "Please specify the :project_yml_path." }
+project = YAML.load_file(fetch(:project_yml_path))
 
 # Default options
 _cset :scm,                   :git

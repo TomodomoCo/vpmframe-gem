@@ -25,10 +25,5 @@ _cset :app_access_users, project["application"]["access_users"]
 _cset :app_theme,        project["application"]["theme"]
 _cset :repository,       project["application"]["repo"]
 _cset :site_domain,      project["application"]["domain"]
-_cset(:app_domain)       { abort "Please specify the :app_domain." }
-
-# Deploy path (:deploy_to for Capistrano, :app_deploy_to for var consistency w/in wpframe)
-_cset :deploy_to,     "/home/#{fetch(:app_user)}/#{fetch(:app_domain)}"
-_cset :app_deploy_to, fetch(:deploy_to)
 
 end

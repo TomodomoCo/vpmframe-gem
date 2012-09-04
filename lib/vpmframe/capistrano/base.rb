@@ -6,8 +6,10 @@ end
 
 Capistrano::Configuration.instance.load do
 
-_cset (:project_yml_path)      { abort "Please specify the :project_yml_path." }
-project = YAML.load_file(fetch(:project_yml_path))
+_cset(:project_yml_path)  { abort "Please specify the :project_yml_path." }
+_cset(:database_yml_path) { abort "Please specify the :database_yml_path." }
+project  = YAML.load_file(fetch(:project_yml_path))
+database = YAML.load_file(fetch(:database_yml_path))
 
 # Default options
 _cset :scm,                   :git
@@ -25,7 +27,7 @@ _cset :app_access_users, project["application"]["access_users"]
 _cset :app_theme,        project["application"]["theme"]
 _cset :repository,       project["application"]["repo"]
 _cset :site_domain,      project["application"]["domain"]
-_cset :app_domain,       "#{app_stage}." + project["application"]["domain"]
+_cset(:app_domain)       { abort "Please specify the :app_domain." }
 
 # Pull in DB config
 _cset :db_name,     database[fetch(:app_stage)]["name"]

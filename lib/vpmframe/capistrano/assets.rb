@@ -23,10 +23,10 @@ namespace :assets do
     system("cd ~/.captemp/#{fetch(:application)} && compass compile -e production --force")
 
     # Make remote dir
-    run "mkdir -p #{release_path}/public/content/themes/#{project['application']['theme']}/css/"
+    run "mkdir -p #{release_path}/public/content/themes/#{fetch(:app_theme)}/css/"
 
     # Upload assets
-    system("scp -r -P #{project['application']['servers'][fetch(:app_stage)]['port']} ~/.captemp/#{fetch(:application)}/public/content/themes/#{project['application']['theme']}/css #{fetch(:user)}@#{project['application']['servers'][fetch(:app_stage)]['ip']}:#{release_path}/public/content/themes/#{project['application']['theme']}/")
+    system("scp -r -P #{fetch(:app_port)} ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/css #{fetch(:user)}@#{fetch(:app_server)}:#{release_path}/public/content/themes/#{fetch(:app_theme)}/")
   end
 
   desc "Upload compiled JS"
@@ -35,22 +35,22 @@ namespace :assets do
     system("cd ~/.captemp/#{fetch(:application)} && jammit -c config/assets.yml")
 
     # Make remote dir
-    run "mkdir -p #{release_path}/public/content/themes/#{project['application']['theme']}/js/"
+    run "mkdir -p #{release_path}/public/content/themes/#{fetch(:app_theme)}/js/"
 
     # Upload assets
-    system("scp -r -P #{project['application']['servers'][fetch(:app_stage)]['port']} ~/.captemp/#{fetch(:application)}/public/content/themes/#{project['application']['theme']}/js #{fetch(:user)}@#{project['application']['servers'][fetch(:app_stage)]['ip']}:#{release_path}/public/content/themes/#{project['application']['theme']}/")
+    system("scp -r -P #{fetch(:app_port)} ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/js #{fetch(:user)}@#{fetch(:app_server)}:#{release_path}/public/content/themes/#{fetch(:app_theme)}/")
   end
 
   desc "Upload compiled images"
   task :upload_asset_images, :roles => :app do
     # Compile local assets
-    system("cp -R ~/.captemp/#{fetch(:application)}/app/assets/images/ ~/.captemp/#{fetch(:application)}/public/content/themes/#{project['application']['theme']}/img")
-    #system("open -a ImageOptim.app ~/.captemp/#{fetch(:application)}/public/content/themes/#{project['application']['theme']}/img/*")
+    system("cp -R ~/.captemp/#{fetch(:application)}/app/assets/images/ ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img")
+    #system("open -a ImageOptim.app ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img/*")
 
     # Make remote dir
-    run "mkdir -p #{release_path}/public/content/themes/#{project['application']['theme']}/img/"
+    run "mkdir -p #{release_path}/public/content/themes/#{fetch(:app_theme)}/img/"
 
-    system("scp -r -P #{project['application']['servers'][fetch(:app_stage)]['port']} ~/.captemp/#{fetch(:application)}/public/content/themes/#{project['application']['theme']}/img #{fetch(:user)}@#{project['application']['servers'][fetch(:app_stage)]['ip']}:#{release_path}/public/content/themes/#{project['application']['theme']}/")
+    system("scp -r -P #{fetch(:app_port)} ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img #{fetch(:user)}@#{fetch(:app_server)}:#{release_path}/public/content/themes/#{fetch(:app_theme)}/")
   end
 
   desc "Cleanup local copy"

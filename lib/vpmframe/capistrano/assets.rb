@@ -1,3 +1,5 @@
+require 'guard'
+
 unless Capistrano::Configuration.respond_to?(:instance)
   abort "capistrano-vpmframe requires Capistrano 2+"
 end
@@ -14,12 +16,18 @@ namespace :assets do
     # Get the local clone
     system("mkdir -p ~/.captemp")
     system("git clone #{fetch(:repository)} ~/.captemp/#{fetch(:application)}")
+
+    # TODO: Temporary compilation method. Ideally, we just run the Guardfile's :compile group.
+    # We run images first here because we're temporarily using ImageOptim.app, which is non-blocking.
+    system("cp -R ~/.captemp/#{fetch(:application)}/app/assets/images/ ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img")
+    system("open -a ImageOptim.app ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img/*")
+
+    # Update submodules
     system("cd ~/.captemp/#{fetch(:application)} && git submodule init && git submodule update")
 
-    # Compile the local clone
-    Guard.setup
-    Guard::Dsl.evaluate_guardfile(:guardfile => 'Guardfile', :group => ['frontend'])
-    Guard.run_all({})
+    # TODO: Temporary compilation method. Ideally, we just run the Guardfile's :compile group.
+    system("cd ~/.captemp/#{fetch(:application)} && jammit -c config/assets.yml") # Jammit
+    system("cd ~/.captemp/#{fetch(:application)} && compass compile -e production --force") # Compass
   end
 
   desc "Upload compiled CSS"

@@ -8,7 +8,11 @@ Capistrano::Configuration.instance.load do
 
 namespace :assets do
 
-  desc "Get (and compile) local clone"
+  ##
+  # Download
+  ##
+
+  desc "Get local clone"
   task :local_temp_clone, :roles => :app do
     # Clear out any existing local clones
     system("rm -rf ~/.captemp")
@@ -17,18 +21,35 @@ namespace :assets do
     system("mkdir -p ~/.captemp")
     system("git clone #{fetch(:repository)} ~/.captemp/#{fetch(:application)}")
 
-    # TODO: Temporary compilation method. Ideally, we just run the Guardfile's :compile group.
-    # We run images first here because we're temporarily using ImageOptim.app, which is non-blocking.
-    system("cp -R ~/.captemp/#{fetch(:application)}/app/assets/images/ ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img")
-    system("open -a ImageOptim.app ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img/*")
-
     # Update submodules
     system("cd ~/.captemp/#{fetch(:application)} && git submodule init && git submodule update")
+  end
 
-    # TODO: Temporary compilation method. Ideally, we just run the Guardfile's :compile group.
+
+  ##  
+  # TODO: Temporary compilation method. Ideally, we just run the Guardfile's :compile group.
+  ##
+
+  desc "Compile local images"
+  task :compile_local_images, :roles => :app do
+    system("cp -R ~/.captemp/#{fetch(:application)}/app/assets/images/ ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img")
+    system("image_optim --no-pngout ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img/*")
+  end
+
+  desc "Compile local JS"
+  task :compile_local_js, :roles => :app do
     system("cd ~/.captemp/#{fetch(:application)} && jammit -c config/assets.yml") # Jammit
+  end
+
+  desc "Compile local CSS"
+  task :compile_local_css, :roles => :app do
     system("cd ~/.captemp/#{fetch(:application)} && compass compile -e production --force") # Compass
   end
+
+
+  ##
+  # Upload
+  ##
 
   desc "Upload compiled CSS"
   task :upload_asset_css, :roles => :app do
@@ -55,6 +76,11 @@ namespace :assets do
 
     system("scp -r -P #{fetch(:app_port)} ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img #{fetch(:user)}@#{fetch(:app_server)}:#{release_path}/public/content/themes/#{fetch(:app_theme)}/")
   end
+
+
+  ##
+  # Cleanup
+  ##
 
   desc "Cleanup local copy"
   task :local_temp_cleanup, :roles => :app do

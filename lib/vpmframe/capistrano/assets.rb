@@ -27,23 +27,12 @@ namespace :assets do
 
 
   ##  
-  # TODO: Temporary compilation method. Ideally, we just run the Guardfile's :compile group.
+  # TODO: Better support for make stuff
   ##
 
-  desc "Compile local images"
-  task :compile_local_images, :roles => :app do
-    system("cp -R ~/.captemp/#{fetch(:application)}/app/assets/images/ ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img")
-    system("image_optim --recursive --no-pngout ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img/")
-  end
-
-  desc "Compile local JS"
-  task :compile_local_js, :roles => :app do
-    system("cd ~/.captemp/#{fetch(:application)} && jammit -c config/assets.yml") # Jammit
-  end
-
-  desc "Compile local CSS"
-  task :compile_local_css, :roles => :app do
-    system("cd ~/.captemp/#{fetch(:application)} && compass compile -e production --force") # Compass
+  desc "Compile local assets"
+  task :compile_local_assets, :roles => :app do
+    system("cd ~/.captemp/#{fetch(:application)} && make assets")
   end
 
 

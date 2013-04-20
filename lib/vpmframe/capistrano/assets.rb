@@ -33,7 +33,7 @@ namespace :assets do
   desc "Compile local images"
   task :compile_local_images, :roles => :app do
     system("cp -R ~/.captemp/#{fetch(:application)}/app/assets/images/ ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img")
-    system("image_optim --no-pngout ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img/*")
+    system("image_optim --recursive --no-pngout ~/.captemp/#{fetch(:application)}/public/content/themes/#{fetch(:app_theme)}/img/")
   end
 
   desc "Compile local JS"

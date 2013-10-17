@@ -14,7 +14,7 @@ namespace :salts do
 
   desc "Symlink salts"
   task :symlink_wp_salts, :roles => :app do
-    run "#{sudo} ln -nfs #{shared_path}/config/wp-salts.php #{release_path}/config/wp-salts.php"
+    run "#{try_sudo} ln -nfs #{shared_path}/config/wp-salts.php #{release_path}/config/wp-salts.php"
   end
 
 end

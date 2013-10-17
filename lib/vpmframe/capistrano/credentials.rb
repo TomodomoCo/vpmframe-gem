@@ -20,7 +20,7 @@ namespace :credentials do
 
   desc "Symlink database credentials to the current release directory"
   task :symlink_db_cred, :roles => :app do
-    run "#{sudo} ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    run "#{try_sudo} ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
   end
 
 end

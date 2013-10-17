@@ -39,6 +39,11 @@ namespace :assets do
   ##
   # Upload
   ##
+  
+  desc "Upload all local assets (only works if files are deployed to top-level assets folder)"
+  task :upload_local_assets, :roles => :app do
+    system("scp -r -P #{fetch(:app_port)} ~/.captemp/#{fetch(:application)}/public/assets #{fetch(:user)}@#{fetch(:app_server)}:#{release_path}/public/")
+  end
 
   desc "Upload compiled CSS"
   task :upload_asset_css, :roles => :app do

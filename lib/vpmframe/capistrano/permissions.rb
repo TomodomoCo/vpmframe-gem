@@ -17,6 +17,7 @@ namespace :permissions do
   desc "Fix ownership on deploy"
   task :fix_deploy_ownership, :roles => :app do
     run "#{try_sudo} chown --dereference -RL #{app_user}:#{app_group} #{deploy_to}/current/public"
+    run "#{try_sudo} chmod -R g+w #{deploy_to}/current/public"
   end
 
 end

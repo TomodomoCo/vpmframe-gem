@@ -16,6 +16,11 @@ namespace :credentials do
     upload("./config/s3.yml", "#{shared_path}/config/s3.yml")
   end
 
+  desc "Upload S3 credentials to the shared directory"
+  task :upload_htpasswd_cred, :roles => :app do
+    upload("./config/puppet/templates/nginx/htpasswd", "#{shared_path}/config/htpasswd")
+  end
+
   desc "Symlink database credentials to the current release directory"
   task :symlink_db_cred, :roles => :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"

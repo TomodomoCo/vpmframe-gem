@@ -8,7 +8,7 @@ namespace :composer do
 
   desc "Copy vendors from previous release"
   task :copy_vendors, :except => { :no_release => true } do
-    run "if [ -d #{previous_release}/vendor/composer ]; then cp -a #{previous_release}/vendor/composer #{latest_release}/vendor/composer; fi"
+    run "if [ -d #{previous_release}/vendor/composer ]; then mkdir -p #{latest_release}/vendor && cp -a #{previous_release}/vendor/composer #{latest_release}/vendor/composer; fi"
   end
 
   desc "Run composer install"

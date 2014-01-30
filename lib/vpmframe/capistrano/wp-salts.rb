@@ -8,13 +8,12 @@ namespace :salts do
   
   desc "Generate new salts"
   task :generate_wp_salts, :roles => :app do
-    run "mkdir -p #{shared_path}/config"
     run "echo '<?php' > #{shared_path}/config/wp-salts.php && curl https://api.wordpress.org/secret-key/1.1/salt >> #{shared_path}/config/wp-salts.php"
   end
 
   desc "Symlink salts"
   task :symlink_wp_salts, :roles => :app do
-    run "#{try_sudo} ln -nfs #{shared_path}/config/wp-salts.php #{release_path}/config/wp-salts.php"
+    run "ln -nfs #{shared_path}/config/wp-salts.php #{release_path}/config/wp-salts.php"
   end
 
 end

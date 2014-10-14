@@ -43,7 +43,7 @@ namespace :credentials do
 
   desc "Symlink services credentials to the current release directory"
   task :symlink_services_cred, :roles => :app do
-    run "#{sudo} ln -nfs #{shared_path}/config/services #{release_path}/config/services"
+    run "#{try_sudo} ln -nfs #{shared_path}/config/services #{release_path}/config/services"
   end
 
 

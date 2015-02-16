@@ -13,7 +13,7 @@ namespace :assets do
   desc "Get local clone"
   task :local_temp_clone, :roles => :app do
     # Get the local clone
-    system("git clone #{fetch(:repository)} #{fetch(:tmpdir)}/#{fetch(:application)}")
+    system("git clone -b #{fetch(:branch)} #{fetch(:repository)} #{fetch(:tmpdir)}/#{fetch(:application)}")
 
     # Update submodules
     system("cd #{fetch(:tmpdir)}/#{fetch(:application)} && git submodule init && git submodule update")

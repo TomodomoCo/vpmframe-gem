@@ -2,6 +2,10 @@
 
 **vpmframe-gem** is a custom Ruby gem with Capistrano recipes for website deployment, designed for use with [vpmframe-wp](https://github.com/vanpattenmedia/vpmframe-wp).
 
+To package, run `rake build`, or `rake install` to build and install in one step.
+
+For new versions, run `rake release` to create the git tag.
+
 - - -
 
 ### License

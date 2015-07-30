@@ -8,7 +8,7 @@ namespace :salts do
   
   desc "Generate new salts"
   task :generate_wp_salts, :roles => :app do
-    run "echo '<?php' > #{shared_path}/config/wp-salts.php && curl https://api.wordpress.org/secret-key/1.1/salt >> #{shared_path}/config/wp-salts.php"
+    run "#{try_sudo} su $USER -c \"echo '<?php' > #{shared_path}/config/wp-salts.php && curl https://api.wordpress.org/secret-key/1.1/salt >> #{shared_path}/config/wp-salts.php\""
   end
 
   desc "Symlink salts"

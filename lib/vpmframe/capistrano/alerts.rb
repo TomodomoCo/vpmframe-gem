@@ -13,7 +13,7 @@ namespace :alerts do
 
   desc "Deploy alert on Slack"
   task :slack, :roles => :app do
-    system("curl -s -X POST --data-urlencode 'payload={\"channel\": \"#{fetch(:alerts_slack_room)}\", \"username\": \"deploybot\", \"text\": \"*#{fetch(:application)}* deployed *#{fetch(:current_revision)}* successfully to *#{fetch(:app_stage)}* at *#{fetch(:app_server)}*\", \"icon_emoji\": \":computer:\"}' #{fetch(:alerts_slack_hook)} > /dev/null")
+    system("curl -s -X POST --data-urlencode 'payload={\"channel\": \"\##{fetch(:alerts_slack_room)}\", \"username\": \"deploybot\", \"text\": \"*#{fetch(:application)}* deployed *#{fetch(:current_revision)}* successfully to *#{fetch(:app_stage)}* at *#{fetch(:app_server)}*\", \"icon_emoji\": \":computer:\"}' #{fetch(:alerts_slack_hook)} > /dev/null")
   end
 
 end

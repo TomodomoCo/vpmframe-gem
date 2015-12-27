@@ -9,7 +9,6 @@ namespace :assets do
   ##
   # Download
   ##
-
   desc "Get local clone"
   task :local_temp_clone, :roles => :app do
     # Get the local clone
@@ -19,31 +18,25 @@ namespace :assets do
     system("cd #{fetch(:tmpdir)}/#{fetch(:application)} && git submodule init && git submodule update")
   end
 
-
   ##  
   # Compile assets
   ##
-
   desc "Compile local assets"
   task :compile_local_assets, :roles => :app do
     system("cd #{fetch(:tmpdir)}/#{fetch(:application)} && make assets")
   end
 
-
   ##
   # Upload
   ##
-  
   desc "Upload all local assets"
   task :upload_local_assets, :roles => :app do
-    system("scp -r -P #{fetch(:app_port)} #{fetch(:tmpdir)}/#{fetch(:application)}/public/assets #{fetch(:user)}@#{fetch(:app_server)}:#{release_path}/public/")
+    upload( "#{fetch(:tmpdir)}/#{fetch(:application)}/public/assets", "#{release_path}/public/", :via => :scp, :recursive => :true )
   end
-
 
   ##
   # Cleanup
   ##
-
   desc "Cleanup local copy"
   task :local_temp_cleanup, :roles => :app do
     system("rm -rf #{fetch(:tmpdir)}")

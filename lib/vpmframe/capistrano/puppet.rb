@@ -15,7 +15,6 @@ namespace :puppet do
     run "mkdir -p /home/#{fetch(:user)}/tmp/#{fetch(:app_name)}/#{fetch(:app_stage)}"
 
     # Upload the configurations
-    upload("./config/erb-render.rb", "/home/#{fetch(:user)}/tmp/#{fetch(:app_name)}/#{fetch(:app_stage)}/erb-render.rb", :via => :scp)
     upload("./config/puppet", "/home/#{fetch(:user)}/tmp/#{fetch(:app_name)}/#{fetch(:app_stage)}", :via => :scp, :recursive => :true)
 
     # Render the manifest

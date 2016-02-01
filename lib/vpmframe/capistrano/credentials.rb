@@ -7,34 +7,36 @@ Capistrano::Configuration.instance.load do
 namespace :credentials do
 
   ##
-  # Database credentials
+  # Credentials folder
   ##
 
-  desc "Upload database credentials to the shared directory"
-  task :upload_db_cred, :roles => :app do
-    upload("./config/database.yml", "#{shared_path}/config/database.yml")
+  desc "Upload credentials to the shared directory"
+  task :upload_credentials, :roles => :app do
+    run "mkdir -p #{shared_path}/config"
+    upload("./config/credentials", "#{shared_path}/config", :via => :scp, :recursive => :true)
   end
 
-  desc "Symlink database credentials to the current release directory"
-  task :symlink_db_cred, :roles => :app do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+  desc "Symlink services credentials to the current release directory"
+  task :symlink_credentials, :roles => :app do
+    run "#{try_sudo} ln -nfs #{shared_path}/config/credentials #{release_path}/config/credentials"
   end
 
 
   ##
-  # htpasswd credentials
+  # Deprecated
   ##
 
-  desc "Upload htpasswd credentials to the shared directory"
-  task :upload_htpasswd_cred, :roles => :app do
-    upload("./config/puppet/templates/nginx/htpasswd", "#{shared_path}/config/htpasswd")
+  ##
+  # S3 credentials
+  ##
+  desc "Upload S3 credentials to the shared directory"
+  task :upload_s3_cred, :roles => :app do
+    upload("./config/s3.yml", "#{shared_path}/config/s3.yml")
   end
-
 
   ##
   # Services folder
   ##
-
   desc "Upload credentials to the shared directory"
   task :upload_services_cred, :roles => :app do
     run "mkdir -p #{shared_path}/config"
@@ -46,14 +48,25 @@ namespace :credentials do
     run "#{try_sudo} ln -nfs #{shared_path}/config/services #{release_path}/config/services"
   end
 
+  ##
+  # htpasswd credentials
+  ##
+  desc "Upload htpasswd credentials to the shared directory"
+  task :upload_htpasswd_cred, :roles => :app do
+    upload("./config/puppet/templates/nginx/htpasswd", "#{shared_path}/config/htpasswd")
+  end
 
   ##
-  # Deprecated
+  # Database credentials
   ##
+  desc "Upload database credentials to the shared directory"
+  task :upload_db_cred, :roles => :app do
+    upload("./config/database.yml", "#{shared_path}/config/database.yml")
+  end
 
-  desc "Upload S3 credentials to the shared directory"
-  task :upload_s3_cred, :roles => :app do
-    upload("./config/s3.yml", "#{shared_path}/config/s3.yml")
+  desc "Symlink database credentials to the current release directory"
+  task :symlink_db_cred, :roles => :app do
+    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
   end
 
 end

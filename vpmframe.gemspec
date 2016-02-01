@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name          = "vpmframe"
-  gem.version       = "0.9.6"
+  gem.version       = "0.9.7"
 
   gem.authors       = ["Chris Van Patten"]
   gem.email         = ["info@vanpattenmedia.com"]
